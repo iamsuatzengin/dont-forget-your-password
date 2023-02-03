@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="dropdown_items">
+        <item>Netflix</item>
+        <item>Spotify</item>
+        <item>Twitter</item>
+        <item>Instagram</item>
+        <item>YouTube</item>
+    </string-array>
+</resources>

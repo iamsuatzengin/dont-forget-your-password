@@ -1,4 +1,4 @@
-package com.suatzengin.forgotpassword
+package com.suatzengin.forgotpassword.presentation.login
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,13 +10,15 @@ import androidx.biometric.BiometricPrompt
 import androidx.biometric.BiometricPrompt.PromptInfo
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
-import com.suatzengin.forgotpassword.databinding.FragmentFirstBinding
+import com.suatzengin.forgotpassword.R
+import com.suatzengin.forgotpassword.databinding.FragmentLoginBinding
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.Executor
 
+@AndroidEntryPoint
+class LoginFragment : Fragment() {
 
-class FirstFragment : Fragment() {
-
-    private var _binding: FragmentFirstBinding? = null
+    private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var executor: Executor
@@ -28,7 +30,7 @@ class FirstFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
 
         executor = ContextCompat.getMainExecutor(requireContext())
         biometricPrompt = BiometricPrompt(

@@ -1,4 +1,4 @@
-package com.suatzengin.forgotpassword
+package com.suatzengin.forgotpassword.presentation
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,8 +9,11 @@ import androidx.biometric.BiometricManager
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
+import com.suatzengin.forgotpassword.R
 import com.suatzengin.forgotpassword.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration

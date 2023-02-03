@@ -3,26 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/LoginFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.suatzengin.forgotpassword.FirstFragment"
+        android:id="@+id/LoginFragment"
+        android:name="com.suatzengin.forgotpassword.presentation.login.LoginFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        tools:layout="@layout/fragment_login">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            app:destination="@id/AccountListFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.suatzengin.forgotpassword.SecondFragment"
+        android:id="@+id/AccountListFragment"
+        android:name="com.suatzengin.forgotpassword.presentation.account_list.AccountListFragment"
         android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        tools:layout="@layout/fragment_account_list">
 
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            app:destination="@id/LoginFragment" />
+        <action
+            android:id="@+id/action_SecondFragment_to_addAccountFragment"
+            app:destination="@id/addAccountFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/addAccountFragment"
+        android:name="com.suatzengin.forgotpassword.presentation.add_account.AddAccountFragment"
+        android:label="fragment_add_account"
+        tools:layout="@layout/fragment_add_account" />
 </navigation>

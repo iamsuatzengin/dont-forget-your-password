@@ -1,22 +1,20 @@
-package com.suatzengin.forgotpassword
+package com.suatzengin.forgotpassword.presentation.account_list
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.suatzengin.forgotpassword.databinding.FragmentSecondBinding
+import com.suatzengin.forgotpassword.R
+import com.suatzengin.forgotpassword.databinding.FragmentAccountListBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-/**
- * A simple [Fragment] subclass as the second destination in the navigation.
- */
-class SecondFragment : Fragment() {
+@AndroidEntryPoint
+class AccountListFragment : Fragment() {
 
-    private var _binding: FragmentSecondBinding? = null
+    private var _binding: FragmentAccountListBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -24,7 +22,7 @@ class SecondFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentSecondBinding.inflate(inflater, container, false)
+        _binding = FragmentAccountListBinding.inflate(inflater, container, false)
         return binding.root
 
     }
@@ -34,6 +32,10 @@ class SecondFragment : Fragment() {
 
         binding.buttonSecond.setOnClickListener {
             findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+        }
+
+        binding.fab.setOnClickListener {
+            findNavController().navigate(R.id.action_SecondFragment_to_addAccountFragment)
         }
     }
 
