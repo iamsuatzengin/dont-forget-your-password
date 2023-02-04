@@ -8,11 +8,16 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.suatzengin.forgotpassword.R
 import com.suatzengin.forgotpassword.databinding.FragmentAddAccountBinding
 import com.suatzengin.forgotpassword.domain.model.Platform
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AddAccountFragment : Fragment() {
@@ -32,6 +37,8 @@ class AddAccountFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        observe()
+
         val platforms = listOf(
             Platform.NETFLIX, Platform.SPOTIFY,
             Platform.TWITTER, Platform.INSTAGRAM, Platform.YOUTUBE
@@ -46,48 +53,56 @@ class AddAccountFragment : Fragment() {
         }
 
         binding.socialContent.typeText.setOnItemClickListener { adapterView, viewx, i, l ->
-            val platformValue =binding.socialContent.typeText.text
-            Toast.makeText(
-                requireContext(),
-                "${platformValue}",
-                Toast.LENGTH_SHORT
-            ).show()
+            val platformValue = binding.socialContent.typeText.text
             viewModel.setPlatform(platformValue.toString())
         }
 
-
         binding.apply {
             radioGroup.setOnCheckedChangeListener { radioGroup, id ->
+                buttonSave.visibility = View.VISIBLE
                 when (id) {
                     rbSocial.id -> {
-                        binding.socialContent.root.visibility = View.VISIBLE
-                        binding.ibanContent.root.visibility = View.GONE
-                        binding.buttonSave.setOnClickListener {
+                        socialContent.root.visibility = View.VISIBLE
+                        ibanContent.root.visibility = View.GONE
+                        buttonSave.setOnClickListener {
                             addSocialAccount()
                         }
                     }
 
                     rbIban.id -> {
-                        binding.socialContent.root.visibility = View.GONE
-                        binding.ibanContent.root.visibility = View.VISIBLE
-                        binding.buttonSave.setOnClickListener {
+                        socialContent.root.visibility = View.GONE
+                        ibanContent.root.visibility = View.VISIBLE
+                        buttonSave.setOnClickListener {
                             addIban()
                         }
                     }
                 }
             }
         }
+    }
 
-
+    private fun observe() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.eventFlow.collectLatest { event ->
+                    when (event) {
+                        is UiEvent.ShowMessage -> {
+                            Toast.makeText(requireContext(), event.message, Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun addSocialAccount() {
-        val usernameOrEmail = binding.socialContent.textFieldUsername.editText?.text
-        val password = binding.socialContent.textFieldPassword.editText?.text
+        val usernameOrEmail = binding.socialContent.textFieldUsername.editText?.text.toString()
+        val password = binding.socialContent.textFieldPassword.editText?.text.toString()
 
         viewModel.setSocialAccount(
-            usernameOrEmail = usernameOrEmail.toString(),
-            password = password.toString()
+            usernameOrEmail = usernameOrEmail,
+            password = password
         )
         viewModel.addSocialAccounts()
     }

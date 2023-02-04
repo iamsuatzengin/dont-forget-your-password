@@ -15,13 +15,13 @@ class LocalRepositoryImpl @Inject constructor(
 
     override fun getAllAccounts(): Flow<List<SocialAccount>> = socialAccountDao.gettAllAccount()
 
-    override suspend fun addAccount(socialAccount: SocialAccount) {
-        return socialAccountDao.addAccount(socialAccount = socialAccount)
-    }
+    override suspend fun addAccount(socialAccount: SocialAccount) =
+        socialAccountDao.addAccount(socialAccount = socialAccount)
 
-    override suspend fun deleteAccount(socialAccount: SocialAccount) {
-        return socialAccountDao.deleteAccount(socialAccount = socialAccount)
-    }
+
+    override suspend fun deleteAccount(socialAccount: SocialAccount) =
+        socialAccountDao.deleteAccount(socialAccount = socialAccount)
+
 
     override fun getIbans(): Flow<List<Iban>> = ibanDao.getIbans()
 

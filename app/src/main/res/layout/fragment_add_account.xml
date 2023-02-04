@@ -29,7 +29,6 @@
         android:id="@+id/radio_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:checkedButton="@id/rb_social"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="8dp"
@@ -55,7 +54,7 @@
         layout="@layout/add_social_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <include
         android:id="@+id/iban_content"
@@ -71,6 +70,7 @@
         android:layout_margin="16dp"
         android:backgroundTint="@color/secondaryContainer"
         android:text="@string/save"
+        android:visibility="gone"
         android:textColor="@color/onSecondaryContainer"
         app:layout_constraintTop_toBottomOf="@id/social_content" />
 </LinearLayout>
