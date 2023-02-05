@@ -2,15 +2,21 @@ package com.suatzengin.forgotpassword.presentation.account_list.iban
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
+import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.suatzengin.forgotpassword.R
+import com.suatzengin.forgotpassword.common.copyToClipboard
 import com.suatzengin.forgotpassword.databinding.FragmentIbanBinding
+import com.suatzengin.forgotpassword.domain.model.Iban
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -35,8 +41,40 @@ class IbanFragment : Fragment() {
         recyclerAdapter = IbanRecyclerAdapter()
 
         setupRecyclerView()
-
         observe()
+
+        recyclerAdapter.setOnClickMoreListener { iban, v ->
+            showMenu(v, R.menu.menu_main, iban)
+        }
+    }
+
+    private fun showMenu(v: View, @MenuRes menuRes: Int, iban: Iban) {
+        val popup = PopupMenu(requireContext(), v)
+        popup.menuInflater.inflate(menuRes, popup.menu)
+
+        popup.setOnMenuItemClickListener { menuItem: MenuItem ->
+            when (menuItem.itemId) {
+                R.id.option_edit -> {
+
+                    true
+                }
+
+                R.id.option_copy -> {
+                    val copiedText = iban.ibanNumber
+                    copiedText.copyToClipboard(requireContext())
+                    true
+                }
+
+                R.id.option_delete -> {
+                    viewModel.deleteIban(iban = iban)
+                    true
+                }
+
+                else -> false
+            }
+        }
+
+        popup.show()
     }
 
     private fun setupRecyclerView() {

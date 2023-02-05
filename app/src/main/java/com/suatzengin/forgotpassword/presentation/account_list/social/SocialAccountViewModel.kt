@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -29,5 +30,11 @@ class SocialAccountViewModel @Inject constructor(
         repository.getAllAccounts().onEach { list ->
                 _state.value = list.reversed()
         }.launchIn(viewModelScope)
+    }
+
+    fun deleteSocialAccount(socialAccount: SocialAccount){
+        viewModelScope.launch {
+            repository.deleteAccount(socialAccount = socialAccount)
+        }
     }
 }

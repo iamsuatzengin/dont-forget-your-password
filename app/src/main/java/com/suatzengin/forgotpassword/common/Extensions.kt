@@ -1,5 +1,8 @@
 package com.suatzengin.forgotpassword.common
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.widget.ImageView
 import com.suatzengin.forgotpassword.R
 import com.suatzengin.forgotpassword.domain.model.Platform
@@ -23,4 +26,11 @@ fun ImageView.setPlatformIcon(platform: Platform){
             setImageResource(R.drawable.spotify_icon)
         }
     }
+}
+
+fun String.copyToClipboard(context: Context){
+    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    val copiedText = this
+    val clipData: ClipData = ClipData.newPlainText("Copied", copiedText)
+    clipboard.setPrimaryClip(clipData)
 }

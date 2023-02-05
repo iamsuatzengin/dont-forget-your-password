@@ -1,6 +1,7 @@
 package com.suatzengin.forgotpassword.presentation.account_list.iban
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -9,13 +10,19 @@ import com.suatzengin.forgotpassword.databinding.IbanListItemBinding
 import com.suatzengin.forgotpassword.domain.model.Iban
 
 class IbanRecyclerAdapter : ListAdapter<Iban, IbanViewHolder>(DiffCallBack) {
+
+    private var onClickMoreListener: ((Iban, View) -> Unit)? = null
+    fun setOnClickMoreListener(onClick: (Iban, View) -> Unit) {
+        onClickMoreListener = onClick
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IbanViewHolder {
         return IbanViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: IbanViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+        holder.bind(item, onClickMoreListener)
     }
 
     companion object DiffCallBack : DiffUtil.ItemCallback<Iban>() {
@@ -31,11 +38,15 @@ class IbanRecyclerAdapter : ListAdapter<Iban, IbanViewHolder>(DiffCallBack) {
 
 class IbanViewHolder(private val binding: IbanListItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: Iban) {
+    fun bind(item: Iban, onClickMoreListener: ((Iban, View) -> Unit)?) {
         binding.apply {
             tvOwner.text = item.owner
             tvBankName.text = item.bank
             tvIbanNumber.text = item.ibanNumber
+
+            buttonMore.setOnClickListener{v : View ->
+                onClickMoreListener?.invoke(item, v)
+            }
         }
     }
 
