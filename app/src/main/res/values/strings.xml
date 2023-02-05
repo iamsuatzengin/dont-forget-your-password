@@ -21,4 +21,7 @@
     <string name="bank_name">Bank Name</string>
     <string name="iban_number">IBAN Number</string>
     <string name="new_account">New Account</string>
+    <string name="edit">Edit</string>
+    <string name="copy">Copy</string>
+    <string name="delete">Delete</string>
 </resources>

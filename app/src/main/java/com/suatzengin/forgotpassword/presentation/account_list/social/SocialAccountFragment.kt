@@ -44,7 +44,6 @@ class SocialAccountFragment : Fragment() {
         observeData()
 
         recyclerAdapter.setOnClickMoreListener { social, v ->
-            //Toast.makeText(requireContext(), it.usernameOrEmail, Toast.LENGTH_SHORT).show()
             showMenu(v, R.menu.menu_main, social)
         }
     }
