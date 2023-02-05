@@ -1,51 +1,52 @@
 package com.suatzengin.forgotpassword.presentation.account_list.social
 
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.annotation.MenuRes
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.suatzengin.forgotpassword.R
+import com.suatzengin.forgotpassword.base.BaseFragment
 import com.suatzengin.forgotpassword.common.copyToClipboard
 import com.suatzengin.forgotpassword.databinding.FragmentSocialAccountBinding
 import com.suatzengin.forgotpassword.domain.model.SocialAccount
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.CoroutineScope
 
 @AndroidEntryPoint
-class SocialAccountFragment : Fragment() {
-    private var _binding: FragmentSocialAccountBinding? = null
-    private val binding get() = _binding!!
+class SocialAccountFragment : BaseFragment<FragmentSocialAccountBinding, SocialAccountViewModel>() {
 
     private lateinit var recyclerAdapter: SocialRecyclerAdapter
-    private val viewModel: SocialAccountViewModel by viewModels()
+    override val viewModel: SocialAccountViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentSocialAccountBinding.inflate(inflater, container, false)
-        return binding.root
+    override fun inflateBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentSocialAccountBinding {
+        return FragmentSocialAccountBinding.inflate(inflater, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        recyclerAdapter = SocialRecyclerAdapter()
+    override val observeDataBlock: suspend CoroutineScope.() -> Unit = {
+        viewModel.state.collect { list ->
+            recyclerAdapter.submitList(list)
+        }
+    }
 
-        setupRecyclerView()
-        observeData()
+    override fun onViewCreated() {
+        recyclerAdapter = SocialRecyclerAdapter()
 
         recyclerAdapter.setOnClickMoreListener { social, v ->
             showMenu(v, R.menu.menu_main, social)
         }
+    }
+
+    override fun setupRecyclerView() {
+        val recyclerView = binding.rvSocialAccount
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = recyclerAdapter
     }
 
     private fun showMenu(v: View, @MenuRes menuRes: Int, socialAccount: SocialAccount) {
@@ -78,27 +79,6 @@ class SocialAccountFragment : Fragment() {
         }
 
         popup.show()
-
     }
 
-    private fun setupRecyclerView() {
-        val recyclerView = binding.rvSocialAccount
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = recyclerAdapter
-    }
-
-    private fun observeData() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.state.collect { list ->
-                    recyclerAdapter.submitList(list)
-                }
-            }
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }

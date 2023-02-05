@@ -1,44 +1,45 @@
 package com.suatzengin.forgotpassword.presentation.add_account
 
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.suatzengin.forgotpassword.R
+import com.suatzengin.forgotpassword.base.BaseFragment
 import com.suatzengin.forgotpassword.databinding.FragmentAddAccountBinding
 import com.suatzengin.forgotpassword.domain.model.Platform
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class AddAccountFragment : Fragment() {
-    private var _binding: FragmentAddAccountBinding? = null
-    private val binding get() = _binding!!
+class AddAccountFragment : BaseFragment<FragmentAddAccountBinding, AddAccountViewModel>() {
 
-    private val viewModel: AddAccountViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentAddAccountBinding.inflate(inflater, container, false)
-        return binding.root
+    override val viewModel: AddAccountViewModel by viewModels()
+
+    override fun inflateBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentAddAccountBinding {
+        return FragmentAddAccountBinding.inflate(inflater, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override val observeDataBlock: suspend CoroutineScope.() -> Unit = {
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is UiEvent.ShowMessage -> {
+                    Toast.makeText(requireContext(), event.message, Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
+    }
 
-        observe()
-
+    override fun onViewCreated() {
         val platforms = listOf(
             Platform.NETFLIX, Platform.SPOTIFY,
             Platform.TWITTER, Platform.INSTAGRAM, Platform.YOUTUBE
@@ -57,6 +58,10 @@ class AddAccountFragment : Fragment() {
             viewModel.setPlatform(platformValue.toString())
         }
 
+        radioGroupOnCheckedListener()
+
+    }
+    private fun radioGroupOnCheckedListener(){
         binding.apply {
             radioGroup.setOnCheckedChangeListener { radioGroup, id ->
                 buttonSave.visibility = View.VISIBLE
@@ -74,21 +79,6 @@ class AddAccountFragment : Fragment() {
                         ibanContent.root.visibility = View.VISIBLE
                         buttonSave.setOnClickListener {
                             addIban()
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private fun observe() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.eventFlow.collectLatest { event ->
-                    when (event) {
-                        is UiEvent.ShowMessage -> {
-                            Toast.makeText(requireContext(), event.message, Toast.LENGTH_SHORT)
-                                .show()
                         }
                     }
                 }
