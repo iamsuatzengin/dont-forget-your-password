@@ -8,7 +8,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tf_owner"
+        android:id="@+id/text_field_owner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -18,34 +18,37 @@
         >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_owner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tf_bank_name"
+        android:id="@+id/text_field_bank_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:endIconDrawable="@drawable/ic_delete"
         android:layout_margin="16dp"
         android:hint="@string/bank_name"
-        app:layout_constraintTop_toBottomOf="@id/tf_owner">
+        app:layout_constraintTop_toBottomOf="@id/text_field_owner">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_bank_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tf_iban_number"
+        android:id="@+id/text_field_iban_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:endIconDrawable="@drawable/ic_delete"
         android:layout_margin="16dp"
         android:hint="@string/iban_number"
-        app:layout_constraintTop_toBottomOf="@id/tf_bank_name">
+        app:layout_constraintTop_toBottomOf="@id/text_field_bank_name">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_iban_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>

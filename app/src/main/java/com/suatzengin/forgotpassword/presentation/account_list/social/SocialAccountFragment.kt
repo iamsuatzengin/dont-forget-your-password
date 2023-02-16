@@ -5,6 +5,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.annotation.MenuRes
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -66,6 +67,7 @@ class SocialAccountFragment : BaseFragment<FragmentSocialAccountBinding, SocialA
                         ${socialAccount.password}
                     """.trimIndent()
                     copiedText.copyToClipboard(requireContext())
+                    Toast.makeText(requireContext(), "Copied!", Toast.LENGTH_SHORT).show()
                     true
                 }
 

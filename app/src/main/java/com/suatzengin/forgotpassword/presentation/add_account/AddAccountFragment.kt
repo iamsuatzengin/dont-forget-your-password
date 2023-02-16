@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.suatzengin.forgotpassword.R
 import com.suatzengin.forgotpassword.base.BaseFragment
+import com.suatzengin.forgotpassword.common.checkIsEmpty
 import com.suatzengin.forgotpassword.databinding.FragmentAddAccountBinding
 import com.suatzengin.forgotpassword.domain.model.Platform
 import dagger.hilt.android.AndroidEntryPoint
@@ -61,7 +62,8 @@ class AddAccountFragment : BaseFragment<FragmentAddAccountBinding, AddAccountVie
         radioGroupOnCheckedListener()
 
     }
-    private fun radioGroupOnCheckedListener(){
+
+    private fun radioGroupOnCheckedListener() {
         binding.apply {
             radioGroup.setOnCheckedChangeListener { radioGroup, id ->
                 buttonSave.visibility = View.VISIBLE
@@ -87,26 +89,37 @@ class AddAccountFragment : BaseFragment<FragmentAddAccountBinding, AddAccountVie
     }
 
     private fun addSocialAccount() {
-        val usernameOrEmail = binding.socialContent.textFieldUsername.editText?.text.toString()
-        val password = binding.socialContent.textFieldPassword.editText?.text.toString()
-
-        viewModel.setSocialAccount(
-            usernameOrEmail = usernameOrEmail,
-            password = password
+        val email = binding.socialContent.textFieldUsername.checkIsEmpty(
+            binding.socialContent.editTextUsername
         )
-        viewModel.addSocialAccounts()
+        val password = binding.socialContent.textFieldPassword.checkIsEmpty(
+            binding.socialContent.editTextPassword
+        )
+        if (email.isNotEmpty() && password.isNotEmpty()) {
+            viewModel.setSocialAccount(
+                usernameOrEmail = email,
+                password = password
+            )
+        }
     }
 
     private fun addIban() {
-        val owner = binding.ibanContent.tfOwner.editText?.text
-        val bankName = binding.ibanContent.tfBankName.editText?.text
-        val ibanNumber = binding.ibanContent.tfIbanNumber.editText?.text
-
-        viewModel.setIban(
-            owner = owner.toString(),
-            bankName = bankName.toString(),
-            ibanNumber = ibanNumber.toString()
+        val owner = binding.ibanContent.textFieldOwner.checkIsEmpty(
+            binding.ibanContent.editTextOwner
         )
-        viewModel.addIban()
+        val bankName = binding.ibanContent.textFieldBankName.checkIsEmpty(
+            binding.ibanContent.editTextBankName
+        )
+        val ibanNumber = binding.ibanContent.textFieldIbanNumber.checkIsEmpty(
+            binding.ibanContent.editTextIbanNumber
+        )
+
+        if (owner.isNotEmpty() && bankName.isNotEmpty() && ibanNumber.isNotEmpty()) {
+            viewModel.setIban(
+                owner = owner,
+                bankName = bankName,
+                ibanNumber = ibanNumber
+            )
+        }
     }
 }

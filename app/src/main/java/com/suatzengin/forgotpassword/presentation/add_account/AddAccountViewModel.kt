@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.lang.NullPointerException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,29 +27,33 @@ class AddAccountViewModel @Inject constructor(
     private val _eventChannel = Channel<UiEvent>(Channel.BUFFERED)
     val eventFlow = _eventChannel.receiveAsFlow()
 
-    fun addSocialAccounts() {
+
+
+    private fun addSocialAccount() {
         viewModelScope.launch {
             try {
                 localRepository.addAccount(socialAccount = _state.value.socialAccount!!)
                 _eventChannel.send(UiEvent.ShowMessage(message = "Successfully added!"))
             } catch (e: Exception) {
-                _eventChannel.send(UiEvent.ShowMessage(message = "An error occured!"))
-            } catch (e: NullPointerException) {
-                _eventChannel.send(UiEvent.ShowMessage(message = "An error occured! ${e.localizedMessage}"))
+                _eventChannel.send(UiEvent.ShowMessage(message = e.localizedMessage ?: "An error occurred!"))
             }
         }
     }
 
     fun setSocialAccount(usernameOrEmail: String, password: String) {
-        val socialAccount = SocialAccount(
-            usernameOrEmail = usernameOrEmail,
-            password = password,
-            platform = _state.value.platform!!
-        )
-        _state.update { it.copy(socialAccount = socialAccount) }
+        if (_state.value.platform != null) {
+            val socialAccount = SocialAccount(
+                usernameOrEmail = usernameOrEmail,
+                password = password,
+                platform = _state.value.platform!!
+            )
+            println(socialAccount.toString())
+            _state.update { it.copy(socialAccount = socialAccount) }
+            addSocialAccount()
+        }
     }
 
-    fun addIban() {
+    private fun addIban() {
         viewModelScope.launch {
             try {
                 localRepository.addIban(iban = _state.value.iban!!)
@@ -68,12 +71,12 @@ class AddAccountViewModel @Inject constructor(
             ibanNumber = ibanNumber
         )
         _state.update { it.copy(iban = iban) }
+        addIban()
     }
 
     fun setPlatform(value: String) {
         val platformValue = enumValueOf<Platform>(value)
         _state.update { it.copy(platform = platformValue) }
-
     }
 }
 
