@@ -9,7 +9,6 @@
 
     <string name="hello_foreigner">Hello Foreigner</string>
     <string name="login_description">You must authenticate with biometric credentials. Because I need to know if you are owner these accounts!</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="save">Save</string>
     <string name="username_or_email">Username/Email</string>
@@ -24,4 +23,8 @@
     <string name="edit">Edit</string>
     <string name="copy">Copy</string>
     <string name="delete">Delete</string>
+
+    <string name="prompt_info_title">Biometric Login for the app.</string>
+    <string name="prompt_info_subtitle">Log in using your biometric credential!</string>
+    <string name="prompt_info_cancel">Cancel</string>
 </resources>
