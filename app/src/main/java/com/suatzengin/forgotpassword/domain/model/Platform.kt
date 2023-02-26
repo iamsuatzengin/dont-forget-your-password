@@ -7,4 +7,5 @@ enum class Platform(val value: String) {
     TWITTER(value = "Twitter"),
     INSTAGRAM(value = "Instagram"),
     YOUTUBE(value = "Youtube"),
+    OTHER(value = "Other")
 }

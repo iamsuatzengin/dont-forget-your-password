@@ -15,7 +15,7 @@ import com.suatzengin.forgotpassword.domain.model.Platform
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
-
+import com.suatzengin.forgotpassword.common.UiEvent
 @AndroidEntryPoint
 class AddAccountFragment : BaseFragment<FragmentAddAccountBinding, AddAccountViewModel>() {
 
@@ -43,7 +43,7 @@ class AddAccountFragment : BaseFragment<FragmentAddAccountBinding, AddAccountVie
     override fun onViewCreated() {
         val platforms = listOf(
             Platform.NETFLIX, Platform.SPOTIFY,
-            Platform.TWITTER, Platform.INSTAGRAM, Platform.YOUTUBE
+            Platform.TWITTER, Platform.INSTAGRAM, Platform.YOUTUBE, Platform.OTHER
         )
         val arrayAdapter =
             ArrayAdapter(requireContext(), R.layout.dropdown_item, platforms.map { it.name })

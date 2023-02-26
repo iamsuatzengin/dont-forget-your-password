@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.suatzengin.forgotpassword.common.UiEvent
 
 @HiltViewModel
 class AddAccountViewModel @Inject constructor(
@@ -47,7 +48,7 @@ class AddAccountViewModel @Inject constructor(
                 password = password,
                 platform = _state.value.platform!!
             )
-            println(socialAccount.toString())
+
             _state.update { it.copy(socialAccount = socialAccount) }
             addSocialAccount()
         }
@@ -78,8 +79,4 @@ class AddAccountViewModel @Inject constructor(
         val platformValue = enumValueOf<Platform>(value)
         _state.update { it.copy(platform = platformValue) }
     }
-}
-
-sealed class UiEvent {
-    data class ShowMessage(val message: String) : UiEvent()
 }

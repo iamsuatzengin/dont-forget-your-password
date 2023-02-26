@@ -32,6 +32,9 @@ fun ImageView.setPlatformIcon(platform: Platform) {
         Platform.SPOTIFY -> {
             setImageResource(R.drawable.spotify_icon)
         }
+        Platform.OTHER -> {
+            setImageResource(R.drawable.other_icon)
+        }
     }
 }
 

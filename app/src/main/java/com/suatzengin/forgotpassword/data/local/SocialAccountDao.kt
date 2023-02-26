@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 interface SocialAccountDao {
 
     @Query("SELECT * FROM social_account")
-    fun gettAllAccount(): Flow<List<SocialAccount>>
+    fun getAllAccount(): Flow<List<SocialAccount>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addAccount(socialAccount: SocialAccount)
